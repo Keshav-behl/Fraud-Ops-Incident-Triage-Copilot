@@ -13,7 +13,7 @@ the full phase-by-phase plan and acceptance criteria.
 - [x] Phase 0 — accounts & synthetic knowledge base
 - [x] Phase 1 — embedding ingestion pipeline
 - [x] Phase 2 — Jira Service Management webhook listener
-- [ ] Phase 3 — RAG retrieval layer
+- [x] Phase 3 — RAG retrieval layer
 - [ ] Phase 4 — LLM triage classifier
 - [ ] Phase 5 — auto-routing & sub-task creation
 - [ ] Phase 6 — confidence-gated escalation

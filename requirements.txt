@@ -7,3 +7,4 @@ python-dotenv
 chromadb
 slack_sdk
 streamlit
+pytest
