@@ -16,7 +16,7 @@ the full phase-by-phase plan and acceptance criteria.
 - [x] Phase 3 — RAG retrieval layer
 - [x] Phase 4 — LLM triage classifier
 - [x] Phase 5 — auto-routing & sub-task creation
-- [ ] Phase 6 — confidence-gated escalation
+- [x] Phase 6 — confidence-gated escalation
 - [ ] Phase 7 — SLA timer & triage dashboard
 - [ ] Phase 8 — end-to-end testing, demo script, polish
 

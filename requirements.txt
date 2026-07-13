@@ -8,3 +8,4 @@ chromadb
 slack_sdk
 streamlit
 pytest
+python-multipart
