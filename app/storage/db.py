@@ -53,6 +53,7 @@ def insert_triage(
     rationale: str,
     escalated: bool,
     decision: str = "pending",
+    ingested_at: str | None = None,
 ) -> int:
     with _connect() as conn:
         cur = conn.execute(
@@ -64,7 +65,7 @@ def insert_triage(
             """,
             (
                 ticket_key,
-                _now(),
+                ingested_at or _now(),
                 _now(),
                 risk_tier,
                 confidence,

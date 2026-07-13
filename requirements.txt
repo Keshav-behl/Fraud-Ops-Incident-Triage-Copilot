@@ -9,3 +9,4 @@ slack_sdk
 streamlit
 pytest
 python-multipart
+pandas

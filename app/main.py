@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 
 from fastapi import BackgroundTasks, FastAPI, Request
 
@@ -26,6 +27,7 @@ def health():
 
 @app.post("/webhooks/jira")
 async def jira_webhook(request: Request, background_tasks: BackgroundTasks):
+    ingested_at = datetime.now(timezone.utc).isoformat()
     payload = await request.json()
     logger.info("Received Jira webhook: %s", payload)
 
@@ -47,7 +49,12 @@ async def jira_webhook(request: Request, background_tasks: BackgroundTasks):
 
     if issue_key and title:
         background_tasks.add_task(
-            handle_ticket, issue_key, settings.JIRA_JSM_PROJECT_KEY, title, description or ""
+            handle_ticket,
+            issue_key,
+            settings.JIRA_JSM_PROJECT_KEY,
+            title,
+            description or "",
+            ingested_at,
         )
 
     return {"received": True, "issue_key": issue_key}

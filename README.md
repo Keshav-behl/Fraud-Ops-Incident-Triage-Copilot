@@ -17,7 +17,7 @@ the full phase-by-phase plan and acceptance criteria.
 - [x] Phase 4 — LLM triage classifier
 - [x] Phase 5 — auto-routing & sub-task creation
 - [x] Phase 6 — confidence-gated escalation
-- [ ] Phase 7 — SLA timer & triage dashboard
+- [x] Phase 7 — SLA timer & triage dashboard
 - [ ] Phase 8 — end-to-end testing, demo script, polish
 
 ## Setup
@@ -29,3 +29,12 @@ pip install -r requirements.txt
 cp .env.example .env   # fill in your NVIDIA / Jira / Slack credentials
 python3 data/generate_synthetic_kb.py
 ```
+
+## Dashboard
+
+```bash
+streamlit run dashboard/app.py
+```
+
+Opens at http://localhost:8501. Reads directly from the local `triage_history`
+SQLite table populated by the pipeline — no separate server needed.

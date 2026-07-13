@@ -5,9 +5,20 @@ from app.router.router import auto_route, should_auto_route
 from app.storage import db
 
 
-def handle_ticket(issue_key: str, project_key: str, ticket_title: str, ticket_description: str) -> dict:
+def handle_ticket(
+    issue_key: str,
+    project_key: str,
+    ticket_title: str,
+    ticket_description: str,
+    ingested_at: str | None = None,
+) -> dict:
     """Classify an incoming ticket and either auto-route it (high confidence)
-    or escalate it to Slack for human confirmation (low confidence)."""
+    or escalate it to Slack for human confirmation (low confidence).
+
+    ingested_at should be the timestamp the ticket was received (e.g. webhook
+    receipt time), so time-to-first-triage reflects real processing latency
+    rather than defaulting to "now" for both timestamps.
+    """
     result = classify(ticket_title, ticket_description)
 
     if should_auto_route(result):
@@ -21,6 +32,7 @@ def handle_ticket(issue_key: str, project_key: str, ticket_title: str, ticket_de
             rationale=result.rationale,
             escalated=False,
             decision="auto",
+            ingested_at=ingested_at,
         )
         return {"action": "auto_routed", **routing}
 
@@ -34,6 +46,7 @@ def handle_ticket(issue_key: str, project_key: str, ticket_title: str, ticket_de
         rationale=result.rationale,
         escalated=True,
         decision="pending",
+        ingested_at=ingested_at,
     )
     escalation = post_escalation(issue_key, ticket_title, ticket_description, result, precedents)
     return {"action": "escalated", **escalation}
