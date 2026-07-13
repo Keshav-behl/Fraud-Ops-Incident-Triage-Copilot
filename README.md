@@ -11,7 +11,7 @@ the full phase-by-phase plan and acceptance criteria.
 ## Status
 
 - [x] Phase 0 — accounts & synthetic knowledge base
-- [ ] Phase 1 — embedding ingestion pipeline
+- [x] Phase 1 — embedding ingestion pipeline
 - [ ] Phase 2 — Jira Service Management webhook listener
 - [ ] Phase 3 — RAG retrieval layer
 - [ ] Phase 4 — LLM triage classifier
