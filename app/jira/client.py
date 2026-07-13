@@ -16,6 +16,12 @@ def get_issue(issue_key: str) -> dict:
     return r.json()
 
 
+def get_current_user_account_id() -> str:
+    r = httpx.get(_url("/myself"), auth=_auth, headers=_headers)
+    r.raise_for_status()
+    return r.json()["accountId"]
+
+
 def add_comment(issue_key: str, text: str) -> dict:
     body = {
         "body": {
