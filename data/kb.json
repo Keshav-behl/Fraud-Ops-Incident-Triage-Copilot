@@ -1,0 +1,812 @@
+[
+  {
+    "id": "KB-0048",
+    "title": "Legitimate purchase blocked by fraud rule for Elena",
+    "description": "Elena's $1135.67 purchase at Delta Air Lines was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0063",
+    "title": "Payment gateway experiencing elevated decline rate (45% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 02:14 UTC, with roughly 45% of authorization requests failing with 5xx or timeout errors over a 50-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 50 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0046",
+    "title": "Legitimate purchase blocked by fraud rule for Omar",
+    "description": "Omar's $659.21 purchase at Uber was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Card Risk Team",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0059",
+    "title": "Legitimate purchase blocked by fraud rule for Daniel",
+    "description": "Daniel's $1170.20 purchase at Apple Store was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0070",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 02:14 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 8-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 8 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0069",
+    "title": "Payment gateway experiencing elevated decline rate (80% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 19:03 UTC, with roughly 80% of authorization requests failing with 5xx or timeout errors over a 35-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 35 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0082",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.82 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0062",
+    "title": "Payment gateway experiencing elevated decline rate (60% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 60% of authorization requests failing with 5xx or timeout errors over a 12-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 12 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0035",
+    "title": "Merchant disputes chargeback filed against Apple Store",
+    "description": "Apple Store submitted representment documentation contesting a $371.11 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $371.11 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0045",
+    "title": "Merchant disputes chargeback filed against Uber",
+    "description": "Uber submitted representment documentation contesting a $73.34 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $73.34 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0009",
+    "title": "Cardholder disputes $88.39 charge at Delta Air Lines",
+    "description": "Grace contacted support disputing a $88.39 charge posted from Delta Air Lines, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Charlotte, NC. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $88.39 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0012",
+    "title": "Cardholder disputes $744.64 charge at Delta Air Lines",
+    "description": "Grace contacted support disputing a $744.64 charge posted from Delta Air Lines, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Denver, CO. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $744.64 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0034",
+    "title": "Merchant disputes chargeback filed against Airbnb",
+    "description": "Airbnb submitted representment documentation contesting a $837.44 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $837.44 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0021",
+    "title": "Suspected account takeover on Omar's account after login from new location",
+    "description": "Automated monitoring flagged a login to Omar's account from Columbus, OH, roughly 1,800 miles from the account's usual login region (Phoenix, AZ), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Omar did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0077",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.79 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0065",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 50-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 50 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0019",
+    "title": "Suspected account takeover on Priya's account after login from new location",
+    "description": "Automated monitoring flagged a login to Priya's account from Denver, CO, roughly 1,800 miles from the account's usual login region (Charlotte, NC), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Priya did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0087",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.28 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0024",
+    "title": "Suspected account takeover on James's account after login from new location",
+    "description": "Automated monitoring flagged a login to James's account from Boston, MA, roughly 1,800 miles from the account's usual login region (Seattle, WA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that James did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0004",
+    "title": "Cardholder disputes $291.81 charge at Wayfair",
+    "description": "Grace contacted support disputing a $291.81 charge posted from Wayfair, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Atlanta, GA. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $291.81 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0029",
+    "title": "Suspected account takeover on Priya's account after login from new location",
+    "description": "Automated monitoring flagged a login to Priya's account from Charlotte, NC, roughly 1,800 miles from the account's usual login region (Seattle, WA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Priya did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0018",
+    "title": "Suspected account takeover on Grace's account after login from new location",
+    "description": "Automated monitoring flagged a login to Grace's account from Phoenix, AZ, roughly 1,800 miles from the account's usual login region (Atlanta, GA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Grace did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0074",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 09:47 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 12-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 12 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0080",
+    "title": "Card-testing attack detected: 120 small-value auths from single IP range",
+    "description": "Fraud detection flagged 120 authorization attempts for small amounts (~$1.80 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0089",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.58 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0084",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.39 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0036",
+    "title": "Merchant disputes chargeback filed against Sephora",
+    "description": "Sephora submitted representment documentation contesting a $811.66 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $811.66 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0058",
+    "title": "Legitimate purchase blocked by fraud rule for Wei",
+    "description": "Wei's $634.78 purchase at Shopify Storefront was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0008",
+    "title": "Cardholder disputes $678.13 charge at Delta Air Lines",
+    "description": "Noah contacted support disputing a $678.13 charge posted from Delta Air Lines, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Atlanta, GA. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $678.13 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0014",
+    "title": "Cardholder disputes $301.84 charge at Best Buy",
+    "description": "Elena contacted support disputing a $301.84 charge posted from Best Buy, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Austin, TX. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $301.84 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0038",
+    "title": "Merchant disputes chargeback filed against Target",
+    "description": "Target submitted representment documentation contesting a $537.83 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $537.83 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0007",
+    "title": "Cardholder disputes $738.34 charge at Netflix",
+    "description": "Elena contacted support disputing a $738.34 charge posted from Netflix, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Austin, TX. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $738.34 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0078",
+    "title": "Card-testing attack detected: 200 small-value auths from single IP range",
+    "description": "Fraud detection flagged 200 authorization attempts for small amounts (~$1.02 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0050",
+    "title": "Legitimate purchase blocked by fraud rule for Noah",
+    "description": "Noah's $1229.33 purchase at Nike.com was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0047",
+    "title": "Legitimate purchase blocked by fraud rule for Aisha",
+    "description": "Aisha's $499.55 purchase at Wayfair was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0026",
+    "title": "Suspected account takeover on Elena's account after login from new location",
+    "description": "Automated monitoring flagged a login to Elena's account from Atlanta, GA, roughly 1,800 miles from the account's usual login region (Seattle, WA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Elena did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0032",
+    "title": "Merchant disputes chargeback filed against DoorDash",
+    "description": "DoorDash submitted representment documentation contesting a $600.58 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $600.58 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0088",
+    "title": "Card-testing attack detected: 200 small-value auths from single IP range",
+    "description": "Fraud detection flagged 200 authorization attempts for small amounts (~$0.60 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0051",
+    "title": "Legitimate purchase blocked by fraud rule for Aisha",
+    "description": "Aisha's $55.28 purchase at PlayStation Store was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Card Risk Team",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0064",
+    "title": "Payment gateway experiencing elevated decline rate (15% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 09:47 UTC, with roughly 15% of authorization requests failing with 5xx or timeout errors over a 8-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 8 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0067",
+    "title": "Payment gateway experiencing elevated decline rate (60% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 60% of authorization requests failing with 5xx or timeout errors over a 8-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 8 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0075",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 8-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 8 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0030",
+    "title": "Suspected account takeover on Sofia's account after login from new location",
+    "description": "Automated monitoring flagged a login to Sofia's account from Denver, CO, roughly 1,800 miles from the account's usual login region (Columbus, OH), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Sofia did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0005",
+    "title": "Cardholder disputes $848.33 charge at Steam",
+    "description": "Omar contacted support disputing a $848.33 charge posted from Steam, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Miami, FL. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $848.33 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0072",
+    "title": "Payment gateway experiencing elevated decline rate (45% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 02:14 UTC, with roughly 45% of authorization requests failing with 5xx or timeout errors over a 20-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 20 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0031",
+    "title": "Merchant disputes chargeback filed against Delta Air Lines",
+    "description": "Delta Air Lines submitted representment documentation contesting a $880.63 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $880.63 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0055",
+    "title": "Legitimate purchase blocked by fraud rule for Maria",
+    "description": "Maria's $2135.79 purchase at Delta Air Lines was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0003",
+    "title": "Cardholder disputes $144.15 charge at Amazon Marketplace",
+    "description": "Maria contacted support disputing a $144.15 charge posted from Amazon Marketplace, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Charlotte, NC. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $144.15 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0002",
+    "title": "Cardholder disputes $823.35 charge at Uber",
+    "description": "Aisha contacted support disputing a $823.35 charge posted from Uber, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Chicago, IL. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $823.35 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0010",
+    "title": "Cardholder disputes $1044.45 charge at Target",
+    "description": "Elena contacted support disputing a $1044.45 charge posted from Target, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Phoenix, AZ. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $1044.45 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0013",
+    "title": "Cardholder disputes $349.49 charge at PlayStation Store",
+    "description": "Fatima contacted support disputing a $349.49 charge posted from PlayStation Store, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Chicago, IL. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $349.49 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0015",
+    "title": "Cardholder disputes $280.80 charge at Delta Air Lines",
+    "description": "Carlos contacted support disputing a $280.80 charge posted from Delta Air Lines, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Atlanta, GA. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $280.80 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0020",
+    "title": "Suspected account takeover on James's account after login from new location",
+    "description": "Automated monitoring flagged a login to James's account from Denver, CO, roughly 1,800 miles from the account's usual login region (Austin, TX), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that James did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0044",
+    "title": "Merchant disputes chargeback filed against Wayfair",
+    "description": "Wayfair submitted representment documentation contesting a $381.77 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $381.77 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0016",
+    "title": "Suspected account takeover on Daniel's account after login from new location",
+    "description": "Automated monitoring flagged a login to Daniel's account from Phoenix, AZ, roughly 1,800 miles from the account's usual login region (Boston, MA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Daniel did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0085",
+    "title": "Card-testing attack detected: 200 small-value auths from single IP range",
+    "description": "Fraud detection flagged 200 authorization attempts for small amounts (~$1.41 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0053",
+    "title": "Legitimate purchase blocked by fraud rule for Wei",
+    "description": "Wei's $583.37 purchase at Apple Store was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0006",
+    "title": "Cardholder disputes $154.07 charge at Shopify Storefront",
+    "description": "Wei contacted support disputing a $154.07 charge posted from Shopify Storefront, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Phoenix, AZ. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $154.07 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0068",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 20-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 20 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0040",
+    "title": "Merchant disputes chargeback filed against Delta Air Lines",
+    "description": "Delta Air Lines submitted representment documentation contesting a $472.46 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $472.46 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0041",
+    "title": "Merchant disputes chargeback filed against Airbnb",
+    "description": "Airbnb submitted representment documentation contesting a $494.53 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $494.53 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0043",
+    "title": "Merchant disputes chargeback filed against Uber",
+    "description": "Uber submitted representment documentation contesting a $105.30 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $105.30 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0033",
+    "title": "Merchant disputes chargeback filed against Walmart",
+    "description": "Walmart submitted representment documentation contesting a $484.35 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $484.35 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0076",
+    "title": "Card-testing attack detected: 120 small-value auths from single IP range",
+    "description": "Fraud detection flagged 120 authorization attempts for small amounts (~$0.74 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0011",
+    "title": "Cardholder disputes $224.49 charge at Netflix",
+    "description": "Daniel contacted support disputing a $224.49 charge posted from Netflix, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Miami, FL. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $224.49 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0022",
+    "title": "Suspected account takeover on Sofia's account after login from new location",
+    "description": "Automated monitoring flagged a login to Sofia's account from Atlanta, GA, roughly 1,800 miles from the account's usual login region (Boston, MA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Sofia did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0061",
+    "title": "Payment gateway experiencing elevated decline rate (15% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 09:47 UTC, with roughly 15% of authorization requests failing with 5xx or timeout errors over a 20-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 20 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0066",
+    "title": "Payment gateway experiencing elevated decline rate (80% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 19:03 UTC, with roughly 80% of authorization requests failing with 5xx or timeout errors over a 20-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 20 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0028",
+    "title": "Suspected account takeover on Sofia's account after login from new location",
+    "description": "Automated monitoring flagged a login to Sofia's account from Chicago, IL, roughly 1,800 miles from the account's usual login region (Miami, FL), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Sofia did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0083",
+    "title": "Card-testing attack detected: 350 small-value auths from single IP range",
+    "description": "Fraud detection flagged 350 authorization attempts for small amounts (~$1.94 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0057",
+    "title": "Legitimate purchase blocked by fraud rule for Sofia",
+    "description": "Sofia's $1077.10 purchase at Delta Air Lines was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Card Risk Team",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0060",
+    "title": "Legitimate purchase blocked by fraud rule for Fatima",
+    "description": "Fatima's $229.49 purchase at Uber was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Card Risk Team",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0042",
+    "title": "Merchant disputes chargeback filed against Target",
+    "description": "Target submitted representment documentation contesting a $710.47 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $710.47 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0056",
+    "title": "Legitimate purchase blocked by fraud rule for Daniel",
+    "description": "Daniel's $1039.25 purchase at Target was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0027",
+    "title": "Suspected account takeover on Aisha's account after login from new location",
+    "description": "Automated monitoring flagged a login to Aisha's account from Denver, CO, roughly 1,800 miles from the account's usual login region (Miami, FL), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Aisha did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0037",
+    "title": "Merchant disputes chargeback filed against Target",
+    "description": "Target submitted representment documentation contesting a $217.73 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $217.73 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Merchant Risk",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0081",
+    "title": "Card-testing attack detected: 350 small-value auths from single IP range",
+    "description": "Fraud detection flagged 350 authorization attempts for small amounts (~$1.10 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0001",
+    "title": "Cardholder disputes $64.14 charge at Uber",
+    "description": "Daniel contacted support disputing a $64.14 charge posted from Uber, stating they did not authorize or recognize the transaction. Card is registered to a billing address in Seattle, WA. No prior disputes on the account in the last 12 months.",
+    "resolution_notes": "Reviewed transaction metadata: device fingerprint and IP geolocation did not match the cardholder's historical login pattern, consistent with unauthorized use. Provisional credit of $64.14 issued to the cardholder pending merchant response. Filed a Reg E dispute with the card network under reason code 10.4 (other fraud - card-absent environment). Card was reissued with a new PAN as a precaution. Merchant was notified via the dispute portal and given 30 days to submit compelling evidence. Case closed as confirmed fraud after merchant did not respond within the window; credit finalized.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "disputed_charge_fraud"
+  },
+  {
+    "id": "KB-0090",
+    "title": "Card-testing attack detected: 200 small-value auths from single IP range",
+    "description": "Fraud detection flagged 200 authorization attempts for small amounts (~$0.99 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0052",
+    "title": "Legitimate purchase blocked by fraud rule for Omar",
+    "description": "Omar's $748.86 purchase at Sephora was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0039",
+    "title": "Merchant disputes chargeback filed against Best Buy",
+    "description": "Best Buy submitted representment documentation contesting a $221.47 chargeback, claiming the goods were delivered and signed for, and that the cardholder's dispute reason (item not received) is inconsistent with their delivery and signature records.",
+    "resolution_notes": "Reviewed the merchant's compelling evidence package: signed delivery confirmation, carrier tracking showing delivery to the billing address, and prior order history showing no pattern of friendly fraud on this cardholder. Evidence met the network's representment threshold. Chargeback reversed in the merchant's favor; $221.47 re-debited from the cardholder's provisional credit. Cardholder was notified of the outcome and their right to escalate to arbitration within 10 business days. Case logged in the merchant risk file as a resolved first-time dispute, no pattern flag applied.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Chargeback Ops",
+    "category": "chargeback_dispute"
+  },
+  {
+    "id": "KB-0073",
+    "title": "Payment gateway experiencing elevated decline rate (15% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 14:22 UTC, with roughly 15% of authorization requests failing with 5xx or timeout errors over a 12-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 12 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "High",
+    "resolved_by_team": "Platform Reliability",
+    "category": "gateway_outage"
+  },
+  {
+    "id": "KB-0079",
+    "title": "Card-testing attack detected: 40 small-value auths from single IP range",
+    "description": "Fraud detection flagged 40 authorization attempts for small amounts (~$1.49 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0023",
+    "title": "Suspected account takeover on Daniel's account after login from new location",
+    "description": "Automated monitoring flagged a login to Daniel's account from Atlanta, GA, roughly 1,800 miles from the account's usual login region (Columbus, OH), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Daniel did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0049",
+    "title": "Legitimate purchase blocked by fraud rule for Daniel",
+    "description": "Daniel's $2424.04 purchase at Amazon Marketplace was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Low",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0086",
+    "title": "Card-testing attack detected: 350 small-value auths from single IP range",
+    "description": "Fraud detection flagged 350 authorization attempts for small amounts (~$0.79 each) originating from a narrow IP range within a 10-minute span, targeting sequential/randomly generated card numbers \u2014 a signature consistent with automated card-testing (BIN attack) activity rather than legitimate checkout traffic.",
+    "resolution_notes": "Blocked the originating IP range and associated device fingerprints at the WAF/gateway layer. Enabled a temporary CAPTCHA challenge on the checkout endpoint for the affected merchant category to slow further automated attempts. Cross-referenced the tested card numbers with the issuer's compromised-BIN list and flagged matches for proactive reissuance. Reported the attack pattern to the card network's fraud intelligence unit. No successful fraudulent transactions were confirmed to have gone through; all testing attempts were declined by the velocity and low-amount heuristic rules. Added the attack signature to the standing detection ruleset.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Card Risk Team",
+    "category": "card_testing"
+  },
+  {
+    "id": "KB-0054",
+    "title": "Legitimate purchase blocked by fraud rule for Grace",
+    "description": "Grace's $190.05 purchase at Shopify Storefront was auto-declined by the velocity rule after three transactions in quick succession. Customer called in frustrated, stating all three purchases (a gift order) were intentional and made by them.",
+    "resolution_notes": "Verified the cardholder's identity via account security questions and confirmed the device and IP matched their normal usage pattern. Confirmed all three transactions were legitimate gift purchases placed back-to-back during a holiday sale. Released the block and manually approved the held transactions. Added a temporary velocity-rule allowlist exception for this account for 48 hours to prevent repeat false declines. Logged the rule trigger for the fraud-model tuning backlog \u2014 velocity threshold may be too aggressive during flash-sale windows. No further action needed; apologized to customer for the inconvenience.",
+    "risk_tier": "Medium",
+    "resolved_by_team": "Fraud Ops L1",
+    "category": "false_positive_block"
+  },
+  {
+    "id": "KB-0025",
+    "title": "Suspected account takeover on Maria's account after login from new location",
+    "description": "Automated monitoring flagged a login to Maria's account from Atlanta, GA, roughly 1,800 miles from the account's usual login region (Seattle, WA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Maria did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Trust & Safety",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0017",
+    "title": "Suspected account takeover on Aisha's account after login from new location",
+    "description": "Automated monitoring flagged a login to Aisha's account from Denver, CO, roughly 1,800 miles from the account's usual login region (Seattle, WA), followed within minutes by a password reset request and an attempt to add a new payout/shipping destination.",
+    "resolution_notes": "Session was force-logged-out and the account was temporarily locked pending identity verification. Confirmed via out-of-band phone verification that Aisha did not initiate the login or the password reset. Reverted the shipping/payout address change, rotated the account password and API tokens, and re-enabled MFA (SMS + authenticator app). Reviewed the prior 7 days of account activity for additional unauthorized changes; none found. Added the originating IP range to the account's risk denylist. Customer was notified of the incident and advised to enable hardware security key as a second factor.",
+    "risk_tier": "High",
+    "resolved_by_team": "Fraud Ops L2",
+    "category": "account_takeover"
+  },
+  {
+    "id": "KB-0071",
+    "title": "Payment gateway experiencing elevated decline rate (30% of transactions)",
+    "description": "Monitoring alerted on a spike in gateway timeouts starting at 19:03 UTC, with roughly 30% of authorization requests failing with 5xx or timeout errors over a 50-minute window. Multiple merchants reported checkout failures simultaneously.",
+    "resolution_notes": "Confirmed the root cause was a degraded upstream connection to the card network's authorization endpoint following a routing change on the network's side. Engaged the payment processor's incident channel and failed traffic over to the secondary acquiring connection. Decline rate returned to baseline (<2%) within 50 minutes of failover. Ran a reconciliation job afterward to identify and retry transactions that failed during the window but had funds authorized on the issuer side. Posted a status-page update and an internal postmortem action item to add automatic failover detection instead of manual triage.",
+    "risk_tier": "Critical",
+    "resolved_by_team": "Payments Engineering",
+    "category": "gateway_outage"
+  }
+]

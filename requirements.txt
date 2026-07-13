@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+openai
+httpx
+pydantic
+python-dotenv
+chromadb
+slack_sdk
+streamlit
