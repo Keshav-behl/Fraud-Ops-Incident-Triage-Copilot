@@ -2,7 +2,12 @@ from openai import OpenAI
 
 from app.config import settings
 
-_client = OpenAI(base_url=settings.NVIDIA_BASE_URL, api_key=settings.NVIDIA_API_KEY)
+_client = OpenAI(
+    base_url=settings.NVIDIA_BASE_URL,
+    api_key=settings.NVIDIA_API_KEY,
+    timeout=60.0,
+    max_retries=2,
+)
 
 
 def chat(messages: list[dict], **kwargs) -> str:
