@@ -31,26 +31,26 @@ the full phase-by-phase plan and acceptance criteria.
 Jira Service Management (JSM)
         │  issue created (Automation → send web request)
         ▼
-FastAPI  POST /webhooks/jira  ──────────────────────────────┐
-        │                                                   │
-        ▼                                                   │
-RAG retrieval (Chroma + NVIDIA nv-embedqa-e5-v5)             │
-        │ top-k similar resolved tickets                    │
-        ▼                                                   │
-LLM triage classifier (NVIDIA meta/llama-3.1-8b-instruct)    │
-        │ risk_tier + confidence + suggested_team + rationale│
-        ▼                                                   │
-   confidence >= threshold? ────────── no ──────────┐        │
-        │ yes                                       ▼        │
-        ▼                                  Slack escalation  │
-Auto-route: labels, assignee,              (Block Kit msg +  │
-sub-task for High/Critical                  Confirm/Override)│
+FastAPI  POST /webhooks/jira  ────────────────────────────────┐
+        │                                                     │
+        ▼                                                     │
+RAG retrieval (Chroma + NVIDIA nv-embedqa-e5-v5)              │
+        │ top-k similar resolved tickets                      │
+        ▼                                                     │
+LLM triage classifier (NVIDIA meta/llama-3.1-8b-instruct)     │
+        │ risk_tier + confidence + suggested_team + rationale │
+        ▼                                                     │
+   confidence >= threshold? ────────── no ──────────┐         │
+        │ yes                                       ▼         │
+        ▼                                  Slack escalation   │
+Auto-route: labels, assignee,              (Block Kit msg +   │
+sub-task for High/Critical                  Confirm/Override) │
         │                                           │         │
         ▼                                           ▼         │
         └──────────────► SQLite triage_history ◄────┘         │
-                                │                              │
-                                ▼                              │
-                    Streamlit dashboard ◄────────────────────┘
+                                │                             │
+                                ▼                             │
+                    Streamlit dashboard ◄─────────────────────┘
 ```
 
 ## Setup
